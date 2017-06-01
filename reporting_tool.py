@@ -69,10 +69,14 @@ def topAuthors():
 
     # SQL command
     c.execute("""
-        select name, count(path) as num
-        from authors, log, articles
+        select 
+            name, 
+            count(path) as num
+        from 
+            authors, log, articles
         where author = authors.id and slug = substr(path, 10) 
-        group by name order by num desc limit 3;
+        group by name 
+        order by num desc limit 3;
     ;""")
 
     # Display Result
@@ -88,16 +92,32 @@ def errorCheck():
     connect()
 
     # SQL command
+
+
     c.execute("""
-        select extract(day from time), round((error * 100.0) / (count(substr(status, 1, 3))), 2)
-        from (
-            select extract(day from log.time) as day, count(substr(status, 1, 3)) as error
-            from log
-            where substr(status, 1, 3) = '404' group by day
-            ) as sub, log
-        where substr(status, 1, 3) = '200'
-        group by extract(day from log.time), error
-        """)
+    
+    select
+        PercentErrored.LogDate,
+        to_char((round(PercentErrored.PercentageOf404, 2)), '999D99%')
+        
+    from
+    (
+        select 
+            Errored.LogDate, 
+            Errored.HTTPStatus404Total,
+            ((Errored.HTTPStatus404Total / (select count(*) as total from log where time::date = Errored.LogDate)) * 100) as PercentageOf404
+            from 
+            (
+                select 
+                    time::date as LogDate, 
+                    count(*) * 1.0 as HTTPStatus404Total
+                from log
+                where substr(status, 1, 3) = '404'
+                group by time::date order by LogDate
+            ) as Errored
+    ) as PercentErrored
+    where PercentErrored.PercentageOf404 > 1
+    """)
 
     # Display Result
     reportResults("Days where more than 1% of requests lead to errors", " ")
@@ -105,7 +125,7 @@ def errorCheck():
     # Disconect from database
     conn.close()
 
-articleTitleAuthor()
+#articleTitleAuthor()
 topArticles()
 topAuthors()
 errorCheck()
