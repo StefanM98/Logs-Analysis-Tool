@@ -7,8 +7,8 @@ To Run
 ------
 
 1. Ensure python is installed
-2. Ensure database server is running
-3. Navigate to script directory
+2. Navigate to the script directory
+3. Load the data into your local database with:  psql -d news -f newsdata.sql
 4. Run "reporting_tool.py"
 
 

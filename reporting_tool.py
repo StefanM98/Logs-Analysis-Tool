@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 import psycopg2
 
 
@@ -73,11 +73,11 @@ def topAuthors():
             authors, log, articles
         where author = authors.id and slug = substr(path, 10)
         group by name
-        order by num desc limit 3;
+        order by num desc;
     ;""")
 
     # Display Result
-    reportResults("Top 3 Authors of All Time", "views")
+    reportResults("Top Authors of All Time", "views")
 
 
 def errorCheck():
@@ -95,9 +95,7 @@ def errorCheck():
         select
             Errored.LogDate,
             Errored.HTTPStatus404Total,
-            ((Errored.HTTPStatus404Total / (select count(*) as total
-                from log
-                where time::date = Errored.LogDate)) * 100) as PercentageOf404
+            (Errored.HTTPStatus404Total / Totaled.total) * 100 as PercentageOf404
             from
             (
                 select
@@ -106,7 +104,14 @@ def errorCheck():
                 from log
                 where substr(status, 1, 3) = '404'
                 group by time::date order by LogDate
-            ) as Errored
+            ) as Errored,
+            (
+                select time::date as LogDate,
+                count(*) * 1.0 as total
+                from log
+                group by time::date order by LogDate
+            ) as Totaled
+        where Errored.LogDate = Totaled.LogDate
     ) as PercentErrored
     where PercentErrored.PercentageOf404 > 1
     """)
