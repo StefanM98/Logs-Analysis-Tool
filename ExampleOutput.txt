@@ -1,0 +1,28 @@
+Example Output:
+
+All article titles and their authors :
+
+  Bad things gone, say good people  -  Anonymous Contributor
+  Balloon goons doomed  -  Markoff Chaney
+  Bears love berries, alleges bear  -  Ursula La Multa
+  Candidate is jerk, alleges rival  -  Rudolf von Treppenwitz
+  Goats eat Google's lawn  -  Ursula La Multa
+  Media obsessed with bears  -  Ursula La Multa
+  Trouble for troubled troublemakers  -  Rudolf von Treppenwitz
+  There are a lot of bears  -  Ursula La Multa
+
+Top 3 Articles of All Time :
+
+  Candidate is jerk, alleges rival  -  338647 views
+  Bears love berries, alleges bear  -  253801 views
+  Bad things gone, say good people  -  170098 views
+
+Top 3 Authors of All Time :
+
+  Ursula La Multa  -  507594 views
+  Rudolf von Treppenwitz  -  423457 views
+  Anonymous Contributor  -  170098 views
+
+Days where more than 1% of requests lead to errors :
+
+  2016-07-17  -     2.26%
